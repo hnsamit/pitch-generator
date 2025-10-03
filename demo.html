@@ -1,55 +1,52 @@
-...
-  <script>
-    async function generatePitch() {
-      const idea = document.getElementById('startupIdea').value;
-      const audience = document.getElementById('targetAudience').value;
-      const category = document.getElementById('category').value;
-      const lang = document.getElementById('language').value;
+<script>
+  async function generatePitch() {
+    const idea = document.getElementById('startupIdea').value;
+    const audience = document.getElementById('targetAudience').value;
+    const category = document.getElementById('category').value;
+    const lang = document.getElementById('language').value;
 
-      if (!idea || !audience || !category) {
-        document.getElementById('pitchOutput').textContent = '⚠️ Please fill all fields!';
-        return;
-      }
-
-      document.getElementById('pitchOutput').textContent = '⏳ Generating pitch with AI...';
-
-      try {
-        const response = await fetch('/.netlify/functions/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            idea: `${idea}, for ${audience}, category: ${category}`, 
-            tone: "professional", 
-            length: "short"
-          })
-        });
-
-        const data = await response.json();
-        document.getElementById('pitchOutput').textContent = data.result || '❌ No pitch generated';
-      } catch (err) {
-        document.getElementById('pitchOutput').textContent = '❌ Error: ' + err;
-      }
+    if (!idea || !audience || !category) {
+      document.getElementById('pitchOutput').textContent = '⚠️ Please fill all fields!';
+      return;
     }
 
-    function copyPitch() {
-      const pitch = document.getElementById('pitchOutput').textContent;
-      navigator.clipboard.writeText(pitch).then(() => alert('Copied to clipboard!'));
-    }
+    document.getElementById('pitchOutput').textContent = '⏳ Generating pitch with AI...';
 
-    function clearPitch() {
-      document.getElementById('startupIdea').value = '';
-      document.getElementById('targetAudience').value = '';
-      document.getElementById('category').value = '';
-      document.getElementById('pitchOutput').textContent = 'Your Pitch';
-    }
+    try {
+      const response = await fetch('/.netlify/functions/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          idea: `${idea}, for ${audience}, category: ${category}`, 
+          tone: "professional", 
+          length: "short"
+        })
+      });
 
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const pitch = document.getElementById('pitchOutput').textContent;
-      doc.text(pitch, 10, 10);
-      doc.save('pitch.pdf');
+      const data = await response.json();
+      document.getElementById('pitchOutput').textContent = data.result || '❌ No pitch generated';
+    } catch (err) {
+      document.getElementById('pitchOutput').textContent = '❌ Error: ' + err;
     }
-  </script>
-</body>
-</html>
+  }
+
+  function copyPitch() {
+    const pitch = document.getElementById('pitchOutput').textContent;
+    navigator.clipboard.writeText(pitch).then(() => alert('Copied to clipboard!'));
+  }
+
+  function clearPitch() {
+    document.getElementById('startupIdea').value = '';
+    document.getElementById('targetAudience').value = '';
+    document.getElementById('category').value = '';
+    document.getElementById('pitchOutput').textContent = 'Your Pitch';
+  }
+
+  function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const pitch = document.getElementById('pitchOutput').textContent;
+    doc.text(pitch, 10, 10);
+    doc.save('pitch.pdf');
+  }
+</script>
