@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Startup Pitch Generator</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(to bottom, #4b5efc, #8e54e9);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .navbar {
+      width: 100%;
+      background: rgba(0,0,0,0.2);
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-around;
+      box-sizing: border-box;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 12px;
+      transition: color 0.3s;
+    }
+    .navbar a:hover, .navbar a:focus {
+      color: #ff5733;
+      outline: none;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .pricing-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .card .price {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    .card ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .card ul li {
+      margin: 8px 0;
+    }
+    .card button {
+      background-color: #ff5733;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      padding: 12px 20px;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    .card button:hover {
+      background-color: #e64a19;
+    }
+    .footer { 
+      font-size: 0.9rem;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 20px;
+      border-radius: 5px 5px 0 0;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .footer a {
+      color: #000000;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer a:hover, .footer a:focus {
+      color: #333333;
+      outline: none;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 80%;
+        margin-bottom: 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .card h2 {
+        font-size: 1.5rem;
+      }
+      .card .price {
+        font-size: 1.3rem;
+      }
+      .card button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar" role="navigation" aria-label="Main navigation">
+      <a href="home.html">Home</a>
+      <a href="index.html">Product</a>
+      <a href="ai.html">AI</a>
+      <a href="learn.html">Learn</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+    </div>
+
+    <h1>Pricing Plans</h1>
+
+    <div class="pricing-cards">
+      <div class="card">
+        <h2>Free</h2>
+        <p class="price">$0/month</p>
+        <ul>
+          <li>5 pitches/day</li>
+          <li>Basic AI features</li>
+          <li>Email support</li>
+        </ul>
+        <button>Get Started</button>
+      </div>
+
+      <div class="card">
+        <h2>Pro</h2>
+        <p class="price">$9/month</p>
+        <ul>
+          <li>Unlimited pitches</li>
+          <li>Advanced AI features</li>
+          <li>Priority email support</li>
+        </ul>
+        <button>Get Started</button>
+      </div>
+
+      <div class="card">
+        <h2>Startup</h2>
+        <p class="price">$29/month</p>
+        <ul>
+          <li>Unlimited pitches + Priority</li>
+          <li>All AI features unlocked</li>
+          <li>Dedicated support</li>
+        </ul>
+        <button>Get Started</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" role="contentinfo">
+    Made with ❤️ by Amit Kumar © 2025 | 
+    <a href="https://www.linkedin.com/in/amit-kumar-55197086/" target="_blank">LinkedIn</a> |
+    <a href="https://github.com/hnsamit" target="_blank">GitHub</a>
+  </div>
+</body>
+</html>

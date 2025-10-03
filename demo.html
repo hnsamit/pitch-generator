@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Startup Pitch Generator Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f7f7f7; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+    input, select, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 1rem; }
+    button { cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
+    #output { white-space: pre-line; margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; min-height: 100px; }
+    .btn-group { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🚀 Startup Pitch Generator (Demo)</h2>
+    <label>Enter your Startup Idea:</label>
+    <input id="idea" placeholder="Example: A marketplace for local tutors">
+
+    <label>Select Tone:</label>
+    <select id="tone">
+      <option value="professional">Professional</option>
+      <option value="casual">Casual</option>
+      <option value="investor">Investor</option>
+    </select>
+
+    <label>Length:</label>
+    <label><input type="radio" name="length" value="short" checked> Short</label>
+    <label><input type="radio" name="length" value="long"> Long</label>
+
+    <button onclick="generatePitch()">Generate Pitch</button>
+
+    <div id="output">Your pitch will appear here...</div>
+
+    <div class="btn-group">
+      <button onclick="copyOutput()">Copy</button>
+      <button onclick="downloadTxt()">Download</button>
+    </div>
+  </div>
+
+<script>
+const demoMode = true; // ✅ true = mock demo (safe), false = live API call
+const fnUrl = "/.netlify/functions/generate"; // Netlify function endpoint
+
+async function generatePitch() {
+  const idea = document.getElementById("idea").value || "A marketplace for local tutors";
+  const tone = document.getElementById("tone").value;
+  const length = document.querySelector('input[name="length"]:checked').value;
+  const outputEl = document.getElementById("output");
+
+  outputEl.innerText = "⏳ Generating...";
+
+  if (demoMode) {
+    // Mock output (safe for portfolio)
+    await new Promise(r => setTimeout(r, 800));
+    outputEl.innerText = `Investor Pitch (${length}) — Idea: ${idea}\n\nProblem: Local tutors lack reach. Solution: Platform to connect tutors with students. Business model: Subscription + commission. Ask: $150k to scale.`;
+    return;
+  }
+
+  try {
+    const res = await fetch(fnUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idea, tone, length })
+    });
+    if(!res.ok) throw new Error(await res.text());
+    const data = await res.json();
+    outputEl.innerText = data.result || "⚠️ No pitch generated.";
+  } catch (err) {
+    outputEl.innerText = "❌ Error: " + err.message;
+  }
+}
+
+function copyOutput() {
+  const text = document.getElementById("output").innerText;
+  navigator.clipboard.writeText(text);
+  alert("Pitch copied to clipboard!");
+}
+
+function downloadTxt() {
+  const text = document.getElementById("output").innerText;
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "pitch.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
