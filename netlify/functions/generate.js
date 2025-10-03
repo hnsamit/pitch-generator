@@ -1,13 +1,13 @@
-const fetch = require("node-fetch");
-
 exports.handler = async function(event) {
   try {
     const body = JSON.parse(event.body || "{}");
     const idea = body.idea || "No idea provided";
     const tone = body.tone || "professional";
     const length = body.length || "short";
+    const language = body.language || "English";
 
-    const prompt = `Write a ${length} startup pitch in a ${tone} tone for: ${idea}`;
+    // Prompt me language add kar diya
+    const prompt = `Write a ${length} startup pitch in a ${tone} tone in ${language} language for: ${idea}`;
 
     const resp = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
