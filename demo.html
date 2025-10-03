@@ -2,92 +2,288 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Startup Pitch Generator Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product - Startup Pitch Generator</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 2rem; background: #f7f7f7; }
-    .container { max-width: 700px; margin: auto; background: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
-    input, select, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 1rem; }
-    button { cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 5px; }
-    #output { white-space: pre-line; margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; min-height: 100px; }
-    .btn-group { display: flex; gap: 10px; }
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(to bottom, #4b5efc, #8e54e9);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    /* content wrapper */
+    .container {
+      flex: 1; /* makes space for footer */
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .navbar {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 20px;
+      border-radius: 5px 5px 0 0;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-around;
+      box-sizing: border-box;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 12px;
+      transition: color 0.3s;
+    }
+    .navbar a:hover, .navbar a:focus {
+      color: #ff5733;
+      outline: none;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-top: 20px;
+      width: 100%;
+      text-align: left;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    .section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .step {
+      margin: 10px 0;
+    }
+    .step h4 {
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    input, select, button {
+      padding: 12px;
+      margin: 8px 0;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input:focus, select:focus, button:focus {
+      outline: 2px solid #ff5733;
+      outline-offset: 2px;
+    }
+    select { background-color: white; }
+    button {
+      background-color: #ff5733;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover, button:focus {
+      background-color: #e64a19;
+    }
+
+    #pitchOutput {
+      margin-top: 15px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      min-height: 50px;
+      word-wrap: break-word;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1rem;
+    }
+
+    .action-buttons { 
+      display: flex; 
+      justify-content: space-around; 
+      margin-top: 15px; 
+      width: 100%;
+      padding: 0 20px;
+      box-sizing: border-box;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .action-buttons button { 
+      flex: 1;
+      min-width: 120px;
+    }
+
+    /* sticky footer */
+    .footer { 
+      font-size: 0.9rem; 
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 20px;
+      border-radius: 5px 5px 0 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .footer a {
+      color: #000000;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer a:hover, .footer a:focus {
+      color: #333333;
+      outline: none;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+      }
+      .navbar a {
+        margin: 10px 0;
+        padding: 10px;
+      }
+      .container {
+        padding: 10px;
+      }
+      .section, .action-buttons, .footer {
+        padding: 0 10px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .section h2 {
+        font-size: 1.5rem;
+      }
+      p, .step h4, input, select, button, #pitchOutput {
+        font-size: 0.9rem;
+      }
+      .footer {
+        font-size: 0.8rem;
+      }
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .section h2 {
+        font-size: 1.3rem;
+      }
+      p, .step h4, input, select, button, #pitchOutput {
+        font-size: 0.85rem;
+      }
+      input, select, button {
+        padding: 10px;
+      }
+      .navbar, .section, .action-buttons, .footer {
+        padding: 0 8px;
+      }
+    }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h2>🚀 Startup Pitch Generator (Demo)</h2>
-    <label>Enter your Startup Idea:</label>
-    <input id="idea" placeholder="Example: A marketplace for local tutors">
+    <div class="navbar" role="navigation" aria-label="Main navigation">
+      <a href="home.html">Home</a>
+      <a href="index.html">Product</a>
+      <a href="ai.html">AI</a>
+      <a href="learn.html">Learn</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+    </div>
 
-    <label>Select Tone:</label>
-    <select id="tone">
-      <option value="professional">Professional</option>
-      <option value="casual">Casual</option>
-      <option value="investor">Investor</option>
+    <h1>Startup Pitch Generator</h1>
+    <p>Turn your ideas into powerful pitches with AI! ✨</p>
+
+    <div class="section">
+      <h2>How to Create a Pitch Deck Using AI</h2>
+      <div class="step"><h4>Step 1: Define Your Objectives</h4><p>Outline your pitch's purpose, audience, and key messages.</p></div>
+      <div class="step"><h4>Step 2: Plan Key Sections</h4><p>Include Introduction, Problem, Solution, and Financials.</p></div>
+      <div class="step"><h4>Step 3: Craft Your Prompt</h4><p>Specify layout, design, and sections in a detailed prompt.</p></div>
+      <div class="step"><h4>Step 4: Review and Refine</h4><p>Adjust the deck for clarity and visual appeal.</p></div>
+      <div class="step"><h4>Step 5: Finalize and Share</h4><p>Finalize and prepare for your presentation.</p></div>
+    </div>
+
+    <input type="text" id="startupIdea" placeholder="Startup Idea (e.g., AI Chatbot)" aria-label="Startup Idea">
+    <input type="text" id="targetAudience" placeholder="Target Audience (e.g., Small Businesses)" aria-label="Target Audience">
+    <input type="text" id="category" placeholder="Category (e.g., app, SaaS)" aria-label="Category">
+    <select id="language" aria-label="Language selection">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="hi">Hindi</option>
     </select>
+    <button onclick="generatePitch()">Generate Pitch ✨</button>
+    <div id="pitchOutput" role="region" aria-live="polite">Your Pitch</div>
 
-    <label>Length:</label>
-    <label><input type="radio" name="length" value="short" checked> Short</label>
-    <label><input type="radio" name="length" value="long"> Long</label>
-
-    <button onclick="generatePitch()">Generate Pitch</button>
-
-    <div id="output">Your pitch will appear here...</div>
-
-    <div class="btn-group">
-      <button onclick="copyOutput()">Copy</button>
-      <button onclick="downloadTxt()">Download</button>
+    <div class="action-buttons">
+      <button onclick="copyPitch()">Copy</button>
+      <button onclick="clearPitch()">Clear 🗑️</button>
+      <button onclick="downloadPDF()">Download PDF</button>
     </div>
   </div>
 
-<script>
-const demoMode = true; // ✅ true = mock demo (safe), false = live API call
-const fnUrl = "/.netlify/functions/generate"; // Netlify function endpoint
+  <footer class="footer" role="contentinfo">
+    Made with ❤️ by Amit Kumar © 2025 | 
+    <a href="https://www.linkedin.com/in/amit-kumar-55197086/" target="_blank">LinkedIn</a> |
+    <a href="https://github.com/hnsamit" target="_blank">GitHub</a>
+  </footer>
 
-async function generatePitch() {
-  const idea = document.getElementById("idea").value || "A marketplace for local tutors";
-  const tone = document.getElementById("tone").value;
-  const length = document.querySelector('input[name="length"]:checked').value;
-  const outputEl = document.getElementById("output");
-
-  outputEl.innerText = "⏳ Generating...";
-
-  if (demoMode) {
-    // Mock output (safe for portfolio)
-    await new Promise(r => setTimeout(r, 800));
-    outputEl.innerText = `Investor Pitch (${length}) — Idea: ${idea}\n\nProblem: Local tutors lack reach. Solution: Platform to connect tutors with students. Business model: Subscription + commission. Ask: $150k to scale.`;
-    return;
-  }
-
-  try {
-    const res = await fetch(fnUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idea, tone, length })
-    });
-    if(!res.ok) throw new Error(await res.text());
-    const data = await res.json();
-    outputEl.innerText = data.result || "⚠️ No pitch generated.";
-  } catch (err) {
-    outputEl.innerText = "❌ Error: " + err.message;
-  }
-}
-
-function copyOutput() {
-  const text = document.getElementById("output").innerText;
-  navigator.clipboard.writeText(text);
-  alert("Pitch copied to clipboard!");
-}
-
-function downloadTxt() {
-  const text = document.getElementById("output").innerText;
-  const blob = new Blob([text], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "pitch.txt";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-</script>
+  <script>
+    function generatePitch() {
+      const idea = document.getElementById('startupIdea').value;
+      const audience = document.getElementById('targetAudience').value;
+      const category = document.getElementById('category').value;
+      const lang = document.getElementById('language').value;
+      if (idea && audience && category) {
+        let pitch = `Introducing our innovative ${category} solution, designed to ${idea}, tailored for ${audience}.`;
+        if (lang === 'es') pitch = `Presentando nuestra innovadora solución ${category}, diseñada para ${idea}, dirigida a ${audience}.`;
+        else if (lang === 'fr') pitch = `Présentant notre solution innovante ${category}, conçue pour ${idea}, adaptée à ${audience}.`;
+        else if (lang === 'hi') pitch = `हमारा अभिनव ${category} समाधान, जो ${idea} के लिए डिज़ाइन किया गया है, ${audience} के लिए अनुकूलित है।`;
+        document.getElementById('pitchOutput').textContent = pitch;
+      } else {
+        document.getElementById('pitchOutput').textContent = 'Please fill all fields!';
+      }
+    }
+    function copyPitch() {
+      const pitch = document.getElementById('pitchOutput').textContent;
+      navigator.clipboard.writeText(pitch).then(() => alert('Copied to clipboard!'));
+    }
+    function clearPitch() {
+      document.getElementById('startupIdea').value = '';
+      document.getElementById('targetAudience').value = '';
+      document.getElementById('category').value = '';
+      document.getElementById('pitchOutput').textContent = 'Your Pitch';
+    }
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const pitch = document.getElementById('pitchOutput').textContent;
+      doc.text(pitch, 10, 10);
+      doc.save('pitch.pdf');
+    }
+  </script>
 </body>
 </html>
