@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 
+// Helper to call OpenAI
 async function callOpenAI(prompt, apiKey) {
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -24,38 +25,44 @@ exports.handler = async function(event) {
     const idea = body.idea || "No idea provided";
     const tone = body.tone || "professional";
     const length = body.length || "short";
-    const language = body.language || "English";
+    const langCode = body.language || "en";
     const apiKey = process.env.OPENAI_API_KEY;
 
-    let prompt = `You are a professional pitch writer. Write a ${length} startup pitch in a ${tone} tone. 
-The pitch must be strictly written in ${language}. 
-Startup idea: ${idea}`;
+    // Mapping codes -> full names
+    const languageMap = {
+      en: "English",
+      es: "Spanish",
+      fr: "French",
+      hi: "Hindi"
+    };
 
-    // Special strict prompt for Hindi
-    if (language.toLowerCase() === "hindi") {
-      prompt = `आप एक पेशेवर पिच लेखक हैं। ${tone} शैली में ${length} लंबाई की एक स्टार्टअप पिच लिखें। 
-उत्तर केवल हिंदी (देवनागरी लिपि) में दें, अंग्रेज़ी का उपयोग बिल्कुल न करें। 
-स्टार्टअप आइडिया: ${idea}`;
-    }
+    const language = languageMap[langCode.toLowerCase()] || "English";
 
-    // First API call
-    let data = await callOpenAI(prompt, apiKey);
-    let result = data.choices?.[0]?.message?.content || "No output";
+    // Step 1: Always generate English pitch first
+    const englishPrompt = `You are a professional pitch writer. Write a ${length} startup pitch in a ${tone} tone for: ${idea}`;
+    let data = await callOpenAI(englishPrompt, apiKey);
+    let pitch = data.choices?.[0]?.message?.content || "No output";
 
-    // If Hindi selected but English letters detected, auto-retry with ultra strict prompt
-    if (language.toLowerCase() === "hindi" && /[a-zA-Z]/.test(result)) {
-      const retryPrompt = `आप एक पेशेवर लेखक हैं। 
-सिर्फ हिंदी (देवनागरी लिपि) में स्टार्टअप पिच लिखें। 
-एक भी अंग्रेज़ी शब्द का प्रयोग न करें। 
-आइडिया: ${idea}`;
+    // Step 2: If selected language is NOT English → translate
+    if (language !== "English") {
+      let transPrompt = `Translate this startup pitch into ${language}. 
+      Rules: Use only ${language} script. Do not keep any English words.
+      Pitch: ${pitch}`;
 
-      data = await callOpenAI(retryPrompt, apiKey);
-      result = data.choices?.[0]?.message?.content || "No output (retry failed)";
+      // Special strict rules for Hindi
+      if (language === "Hindi") {
+        transPrompt = `इस स्टार्टअप पिच को हिंदी (देवनागरी लिपि) में अनुवाद करें। 
+        एक भी अंग्रेज़ी शब्द का प्रयोग न करें। 
+        पिच: ${pitch}`;
+      }
+
+      data = await callOpenAI(transPrompt, apiKey);
+      pitch = data.choices?.[0]?.message?.content || "No output (translation failed)";
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ result })
+      body: JSON.stringify({ result: pitch })
     };
   } catch (err) {
     return { statusCode: 500, body: String(err) };
